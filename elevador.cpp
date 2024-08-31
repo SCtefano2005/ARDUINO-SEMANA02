@@ -1,3 +1,4 @@
+
 // Ascensor A
 const int ledPinsA[6] = {2, 3, 4, 5, 6, 7};
 int currentFloorA = 1;
@@ -44,24 +45,28 @@ void loop() {
     
     // Preguntar el piso destino
     Serial.println("Ingrese el piso destino (1-6):");
-    while (Serial.available() == 0) {} // Esperar por la entrada del usuario
-    int finalDestination = Serial.parseInt();
-    
-    if (finalDestination >= 1 && finalDestination <= 6) {
-      if (assignedElevator == 1) {
-        moveElevatorA(finalDestination);
+    while (assignedElevator != 0) { // Esperar por la entrada del usuario
+    while (Serial.available() == 0){}
+      int finalDestination = Serial.parseInt();
+
+
+      if (finalDestination >= 1 && finalDestination <= 6) {
+        if (assignedElevator == 1) {
+          moveElevatorA(finalDestination);
+          assignedElevator = 0;
+        } else {
+          moveElevatorB(finalDestination);
+          assignedElevator = 0;
+        }
       } else {
-        moveElevatorB(finalDestination);
+        Serial.println("Piso invalido. Por favor ingrese un numero entre 1 y 6.");
       }
-    } else {
-      Serial.println("Piso invalido. Por favor ingrese un número entre 1 y 6.");
     }
 
     // Restablecer el ascensor asignado después de completar el viaje
-    assignedElevator = 0;
 
   } else {
-    Serial.println("Piso invalido. Por favor ingrese un número entre 1 y 6.");
+    Serial.println("Piso invalido. Por favor ingrese un numero entre 1 y 6.");
   }
 
   // Volver a iniciar el proceso para un nuevo viaje
